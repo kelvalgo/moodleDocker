@@ -4,17 +4,16 @@ FROM php:8.2-apache
 RUN apt-get update && apt-get install -y libpq-dev git unzip \
     && docker-php-ext-install pdo_pgsql
 
-# Copiar el contenido de la carpeta moodle al DocumentRoot de Apache
-COPY moodle/ /var/www/html/
+# Copiar todo el contenido de moodleDocker a /var/www/html
+COPY . /var/www/html/
 
-# Crear directorio de datos y dar permisos
-RUN mkdir -p /var/www/moodledata \
-    && chown -R www-data:www-data /var/www/moodledata
+# Crear directorio de datos con permisos
+RUN mkdir -p /var/www/moodledata && chown -R www-data:www-data /var/www/moodledata
 
 # Exponer el puerto que Render detectará
 EXPOSE 8080
 
-# Variable de entorno para el directorio de datos
+# Variable de entorno para MoodleData
 ENV MOODLE_DATA=/var/www/moodledata
 
 # Iniciar Apache en primer plano
