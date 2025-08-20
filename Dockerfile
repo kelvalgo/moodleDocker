@@ -1,13 +1,13 @@
 FROM bitnami/moodle:latest
 
-# Exponer puerto que Render detecta
+# Exponer puerto 8080 para Render
 EXPOSE 8080
 
-# Crear directorio de datos escribible
+# Crear directorio de datos en un path escribible
 RUN mkdir -p /app/moodledata && \
     chown -R daemon:daemon /app/moodledata
 
-# Comando que arranca Moodle + Apache en Render
+# Configurar Apache para usar el puerto que Render asigna y desactivar HTTPS interno
 CMD ["/bin/bash", "-c", "\
 PORT=${PORT:-8080} && \
 sed -i \"s/^Listen .*/Listen $PORT/\" /opt/bitnami/apache/conf/httpd.conf && \
