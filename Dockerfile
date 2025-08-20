@@ -1,23 +1,10 @@
-FROM php:8.2-apache
+# Usa la imagen oficial de Bitnami Moodle
+FROM bitnami/moodle:latest
 
-# Instalar extensiones necesarias de Moodle
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    libxml2-dev \
-    libzip-dev \
-    unzip \
-    git \
-    && docker-php-ext-install intl xmlrpc soap zip mysqli pdo pdo_mysql opcache \
-    && a2enmod rewrite
+# Copia tu código de Moodle si quieres sobrescribirlo
+COPY moodle/ /bitnami/moodle
 
-# Copiar el código de Moodle dentro de Apache
-COPY moodle/ /var/www/html/
-
-# Ajustar permisos
-RUN chown -R www-data:www-data /var/www/html/
-
-# Exponer puerto 8080
+# Exponer puerto 8080 para Render
 EXPOSE 8080
 
-# Comando para iniciar Apache en primer plano
-CMD ["apache2-foreground"]
+# Bitnami ya configura Apache/PHP, así que no necesitas CMD extra
