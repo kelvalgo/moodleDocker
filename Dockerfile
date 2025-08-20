@@ -3,7 +3,11 @@ FROM bitnami/moodle:latest
 # Exponer puerto que Render detecta
 EXPOSE 8080
 
-# Comando que inicia Moodle y Apache correctamente en Render
+# Crear directorio de datos en una ruta escribible
+RUN mkdir -p /app/moodledata && \
+    chown -R daemon:daemon /app/moodledata
+
+# Comando que arranca Moodle + Apache en Render
 CMD ["/bin/bash", "-c", "\
 PORT=${PORT:-8080} && \
 sed -i \"s/^Listen .*/Listen $PORT/\" /opt/bitnami/apache/conf/httpd.conf && \
