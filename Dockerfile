@@ -1,10 +1,16 @@
-# Usa la imagen oficial de Bitnami Moodle
+# Usamos la imagen oficial de Moodle con Apache y PHP
 FROM bitnami/moodle:latest
 
-# Copia tu código de Moodle si quieres sobrescribirlo
+# Copiamos el contenido de la carpeta moodle local al directorio de Moodle del contenedor
 COPY moodle/ /bitnami/moodle
 
-# Exponer puerto 8080 para Render
+# Aseguramos permisos correctos para que Moodle pueda escribir
+USER root
+RUN chown -R 1001:1001 /bitnami/moodle /bitnami/moodledata
+USER 1001
+
+# Exponemos el puerto que Render detectará
 EXPOSE 8080
 
-# Bitnami ya configura Apache/PHP, así que no necesitas CMD extra
+# Comando por defecto para iniciar Moodle
+CMD ["nami", "start", "--foreground", "moodle"]
