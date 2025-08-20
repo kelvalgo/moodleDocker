@@ -6,11 +6,12 @@ RUN apt-get update && apt-get install -y \
     libpq-dev git unzip \
     && docker-php-ext-install pdo_pgsql
 
-# Configurar directorio de trabajo
+# Directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar el código de Moodle desde tu repo
-COPY . /var/www/html
+# Copiar el código de Moodle desde la carpeta correcta
+# Si tu repo tiene todo el código en la raíz:
+COPY moodle/ /var/www/html/
 
 # Crear directorio de datos escribible
 RUN mkdir -p /var/www/moodledata && chown -R www-data:www-data /var/www/moodledata
@@ -20,5 +21,5 @@ EXPOSE 8080
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 
-# Comando para iniciar Apache en primer plano
+# Iniciar Apache en primer plano
 CMD ["apache2-foreground"]
