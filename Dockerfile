@@ -3,7 +3,7 @@ FROM bitnami/moodle:latest
 # Exponer puerto que Render detecta
 EXPOSE 8080
 
-# Crear directorio de datos en una ruta escribible
+# Crear directorio de datos escribible
 RUN mkdir -p /app/moodledata && \
     chown -R daemon:daemon /app/moodledata
 
